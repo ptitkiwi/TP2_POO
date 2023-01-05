@@ -1,52 +1,68 @@
 #pragma once
-#include "sgt.h"
-class sgt;
 
+#include "sgt.h"
+
+// Class representing an SGT graph
 class graphSgt
 {
 private:
-	// Data _________________________________________________________________________
+	// SGT stack associated with the graph
+	tSgtStack m_tSgtStack;
+	// Boolean indicating whether the graph is selected or not
+	bool m_selected;
+	// Width of the graph
+	double m_width;
 
-	// Un segment graphique sera défini par un segment, par l'épaisseur de trait du segment et le fait d’être sélectionné ou pas.
-	double  width;
-	bool isSelected;
-	sgt segment;
 public:
-	// constructeurs, destructeurs, affectation, égalité ____________________________
-	graphSgt(sgt _segment);
-	// Construction par défaut : 
+	// Default constructor
 	graphSgt(void);
-	// Renvoie "vrai" si et seulement si tous les éléments termes à termes sont égaux
-	bool operator==(const graphSgt& s) const;
+	// Constructor taking an SGT object as argument
+	graphSgt(sgt _s, double date, double width);
 
-
-	// Accesseurs ___________________________________________________________________
-	// 
-	// Renvoie le segment
-	const sgt getSegment(void) const;
-	// Renvoie le taille du segment graphique 
+	// Read-only accessor for the SGT object associated with the graph
+	const sgt getSgt(void) const;
+	// Read-only accessor for the width of the graph
 	const double getWidth(void) const;
-	// Renvoie le(s) segment(s) graphique(s) selectionné(s)
-	const bool getSelected(void) const;
+	// Read-only accessor for the selection state of the graph
+	const bool getSelect(void) const;
+	// Read-only accessor for the current geometry object
+	// (to be implemented)
+	const sgt getCurrentGeo(void) const;
+	// Read-only accessor for the current time
+	const double getCurrentTime(void) const;
+	// Read-only accessor for the number of states of the graph
+	const double getStateCount(void) const;
 
-	// Assigne une taille de trait à un segment
-	void setSegment(sgt _segment);
-	// Assigne une taille de trait à un segment
+	// Mutator for the SGT object associated with the graph
+	void setSgt(sgt _s);
+	// Mutator for the width of the graph
 	void setWidth(double _width);
-	// Selectionne un/des segment(s)
-	void setSelected(bool _isSelected);
+	// Mutator for the selection state of the graph
+	void setSelect(bool _selected);
 
-	// Opérations ___________________________________________________________________
+	// Push a dated segment onto the stack of geometry segments
+	void push(const sgt& geo, double date);
+	//
+	void pop();
 
-	// Teste si la figure est dans un état valide : le tableau de segments existe
-	// si il y a au moins un segment ; le nbr de segments est inferieur ou égal à
-	// la dimension du tableau ; tous les segments sont inclus dans le rectangle
-	// limite de la figure.
+	// Function to print the graph to an output stream
+	// (to be implemented)
+	// void print(ostream _stream) const;
+
+
+	bool operator==(const graphSgt& A, const graphSgt& B);
+	bool operator!=(const graphSgt& A, const graphSgt& B);
+
+	void print(std::ostream& stream) const;
+
+	// Validation function for the graph
 	bool valid(void) const;
-
-	// Ecriture dans un flux au format : * SGT(PT( -1305.71, 6604.08 ), PT( -3372.95, 4475.2 ))[1]
-	void print(ostream& s) const;
 };
+
+
+
+//ostream& operator<<(ostream& _s, const graphSgt& _graphSeg);
+
 
 // Insertion dans un flux
 ostream& operator<<(ostream& s, const graphSgt& gSgt);

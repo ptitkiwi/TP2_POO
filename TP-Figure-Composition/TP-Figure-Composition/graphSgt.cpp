@@ -10,21 +10,58 @@ graphSgt::graphSgt(sgt _segment)
 {
 }
 
-// Construction par défaut : 
-graphSgt::graphSgt(void)
-	:segment(),
-	isSelected(0),
-	width(0)
+graphSgt::graphSgt(sgt _s, double date, double width) :
 {
+	m_tSgtStack.push(const sgt& _s, double date);
+	m_selected = 0;
+	m_width = width;
+}
+const int graphSgt::getCurrentGeo(void) const
+{
+	return 0;
 }
 
-bool graphSgt::operator==(const graphSgt& s) const
+const double graphSgt::getCurrentTime(void) const
 {
-	return (
-		getSelected() == s.getSelected()
-		&& getSegment() == s.getSegment()
-		&& getWidth() == s.getWidth()
-		);
+	tSgt temp_tsgt;
+	temp_tsgt = m_tSgtStack.back();
+	return temp_sgt.date;
+}
+
+const double graphSgt::getStateCount(void) const
+{
+	return m_tSgtStack.size();
+}
+
+void push(const sgt& geo, double date)
+{
+	m_tSgtStack.push(tSgt new tsgt(geo, date); //TODO
+}
+
+bool operator==(const graphSgt& A, const graphSgt& B)
+{
+	// The stacks must have the same size
+	if (A.m_tSgtStack.size() != B.m_tSgtStack.size())
+	{
+		return false;
+	}
+
+	// Compare each element of the left stack to its counterpart in the right stack
+	for (size_t i = 0; i < A.m_tSgtStack.size(); ++i)
+	{
+		if (A.m_tSgtStack[i] != B.m_tSgtStack[i])
+		{
+			return false;
+		}
+	}
+
+	// If all elements are equal and the widths are equal, then the objects are equal
+	return A.m_width == B.m_width;
+}
+
+bool operator!=(const graphSgt& A, const graphSgt& B)
+{
+	return !(A == B);
 }
 
 bool graphSgt::valid(void) const {
@@ -33,16 +70,19 @@ bool graphSgt::valid(void) const {
 	return true;
 }
 
-//print au format * SGT(PT( -1305.71, 6604.08 ), PT( -3372.95, 4475.2 ))[1]
-void graphSgt::print(ostream& s) const
+void print(std::ostream& stream) const
 {
-	if (isSelected) {
-		s << "* "<< segment << "["<<width<<"]";
+	// Print the selection marker and stroke width
+	stream << (m_selected ? "* " : "  ") << "w(" << m_width << ") ";
+
+	// Print the stack of states
+	stream << "{" << m_tSgtStack.size() << "}";
+	for // A DEFINIR
+	{
+		stream << "<--SGT" << /*COORDONNES SEGMENT*/ << "@" << /*DATE*/;
 	}
-	else {
-		s << "  " << segment << "[" << width << "]";
-	}
-	
+
+	stream << std::endl;
 }
 
 // Insertion d'un segment dans un flux
