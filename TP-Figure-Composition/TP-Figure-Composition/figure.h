@@ -13,11 +13,6 @@ class graphSgt;
 
 class figure
 {
-private:
-    // L'affectation est inaccessible ou bloquée en attendant qu'elle soit cor-
-    // rectement codée
-	//figure& operator=(const figure&);
-
 public:
 // constructeurs, destructeurs, affectation, égalité ____________________________
 
@@ -80,6 +75,11 @@ public:
     // ments sélectionnés. Le nbr de segments est écrit à la fin.
     void print(ostream& s) const;
 
+    // Teste si la figure est dans un état valide : le tableau de segments existe
+    // si il y a au moins un segment ; le nbr de segments est inferieur ou égal à
+    // la dimension du tableau ; tous les segments sont inclus dans le rectangle
+    // limite de la figure.
+    bool valid(void) const;
 
 private:
 // Implémentation _______________________________________________________________
@@ -94,13 +94,6 @@ private:
 
     // Agrandit le tableau de segments de 10%, mais au moins de 8 places de plus.
     void expand(void);
-
-public:
-	// Teste si la figure est dans un état valide : le tableau de segments existe
-	// si il y a au moins un segment ; le nbr de segments est inferieur ou égal à
-	// la dimension du tableau ; tous les segments sont inclus dans le rectangle
-	// limite de la figure.
-	bool valid(void) const;
 };
 
 // Insertion dans un flux

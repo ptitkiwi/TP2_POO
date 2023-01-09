@@ -42,7 +42,7 @@ sgt& sgt::offset(double dx, double dy)
 
 void sgt::print(ostream& s) const
 {
-	s << "SGT(PT" << p1 << ", PT" << p2;
+	s << "SGT(" << p1 << ", " << p2;
 }
 
 // Insertion d'un segment dans un flux

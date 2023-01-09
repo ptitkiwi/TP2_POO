@@ -5,6 +5,7 @@ void testPt(void);
 void testSgt(void);
 void testRct(void);
 void testFigure(void);
+void testTsgt(void);
 
 int main(void)
 {
@@ -61,7 +62,7 @@ int main(void)
 
 
 
-		cout << "=================================================================================" << endl;
+	cout << "=================================================================================" << endl;
 
 
 

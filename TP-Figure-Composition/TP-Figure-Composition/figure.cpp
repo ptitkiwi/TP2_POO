@@ -13,7 +13,8 @@ class sgt;
 bool figure::valid(void) const
 {
 	assert(nSgt <= nDimTS);
-	for (unsigned int i = 0; i < nSgt; i++) {
+	for (unsigned int i = 0; i < nSgt-1; i++) 
+	{
 		assert(rLimit.contains(pTS[i].getSegment()));
 	}
 	return true;

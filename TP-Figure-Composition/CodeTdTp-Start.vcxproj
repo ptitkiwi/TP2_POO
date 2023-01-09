@@ -157,7 +157,9 @@
     <ClCompile Include="TP-Figure-Composition\testSgt.cpp" />
     <ClCompile Include="TP-Figure-Composition\testRct.cpp" />
     <ClCompile Include="TP-Figure-Composition\main.cpp" />
+    <ClCompile Include="TP-Figure-Composition\testTsgt.cpp" />
     <ClCompile Include="TP-Figure-Composition\tSgt.cpp" />
+    <ClCompile Include="TP-Figure-Composition\tSgtStack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TP-Figure-Composition\figure.h" />
@@ -167,6 +169,7 @@
     <ClInclude Include="TP-Figure-Composition\sgt.h" />
     <ClInclude Include="TP-Figure-Composition\stdafx.h" />
     <ClInclude Include="TP-Figure-Composition\tSgt.h" />
+    <ClInclude Include="TP-Figure-Composition\tSgtStack.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
