@@ -37,17 +37,24 @@ void tSgtStack::expand(void)
 // Constructeurs, Destructeurs, Opérations
 
 tSgtStack::tSgtStack(void)
-	: ptSgt(NULL)
+	: ptSgt(nullptr)
 	, nDimStack(0)
 	, ntSgt(0)
 {
 }
 
 tSgtStack::tSgtStack(const tSgtStack& _t)
-	: ptSgt(_t.ptSgt)
-	, nDimStack(_t.nDimStack)
-	, ntSgt(_t.ntSgt)
+	: ptSgt(nullptr)
+	, nDimStack(0)
+	, ntSgt(0)
 {
+	this->nDimStack = _t.nDimStack;
+	this->ntSgt = _t.ntSgt;
+	ptSgt = new tSgt[nDimStack];		// Création de la nouvelle pile copiée de la première
+	for (unsigned int i = 0; i < nDimStack; i++)	// Copie de la pile dans la nouvelle pile copiée
+	{
+		ptSgt[i] = _t.ptSgt[i];
+	}
 }
 
 tSgtStack::~tSgtStack(void)
@@ -102,16 +109,21 @@ void tSgtStack::pop(void)
 
 void tSgtStack::print(ostream& s) const
 {
-	if(ntSgt == 0)
-	{
-		s << "La pile est vide" << endl;
-	}
-	else
+	if (ntSgt > 0)
 	{
 		s << "{" << ntSgt << "}" << top() << endl;
-		for (unsigned int i = ntSgt - 2; i > 0; i--)
+		if (ntSgt > 1)
 		{
-			s << "{" << ntSgt << "}" << ptSgt[i] << endl;
+			for (unsigned long i = ntSgt - 1; i > 0; i--)
+			{
+				s << "<--" << ptSgt[i-1] << endl;
+			}
 		}
 	}
+}
+
+ostream& operator<<(ostream& s, const tSgtStack& f)
+{
+	f.print(s);
+	return s;
 }

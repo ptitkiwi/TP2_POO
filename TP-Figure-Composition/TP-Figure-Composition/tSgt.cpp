@@ -6,7 +6,7 @@ tSgt::tSgt(void)
 {
 }
 
-tSgt::tSgt(graphSgt _seg, double _date)
+tSgt::tSgt(sgt _seg, double _date)
 	:seg(_seg)
 	,date(_date)
 {

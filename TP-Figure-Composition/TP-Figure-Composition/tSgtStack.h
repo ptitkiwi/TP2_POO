@@ -53,6 +53,9 @@ private :
 	void expand(void);
 };
 
+// Insertion dans un flux
+ostream& operator<<(ostream& s, const tSgtStack& f);
+
 // Fonctions Inline
 
 inline const unsigned long tSgtStack::getSize(void) const

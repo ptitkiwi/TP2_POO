@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "pt.h"
 #include "sgt.h"
-#include "rct.h""
+#include "rct.h"
+
 void testSgt(void);
 
 void testSgt(void) // Les segments _____________________________________________

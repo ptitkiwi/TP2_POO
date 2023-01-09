@@ -6,6 +6,7 @@ void testSgt(void);
 void testRct(void);
 void testFigure(void);
 void testTsgt(void);
+void testTsgtStack(void);
 
 int main(void)
 {
@@ -24,7 +25,7 @@ int main(void)
 
 
 	cout << "============================================" << endl;
-
+/*
 	// On teste les points
 	for (int k = 0; k < nb_tests; ++k) {
 		cout << "----------------------------------------" << endl;
@@ -69,7 +70,9 @@ int main(void)
 
 	// On teste les figures
 	//for (int k = 0; k < 10; ++k)
-		testFigure();
+		testFigure(); */
+	testTsgt();
+	testTsgtStack();
 
 	return 0;
 }
