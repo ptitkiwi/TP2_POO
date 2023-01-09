@@ -80,14 +80,11 @@ graphSgt& figure::operator[](unsigned long i) const
 	return(pTS[i]);
 }
 
-// Ajoute un segment graphique à la figure. La géométrie du segment est donnée
-// par l'argument, son épaisseur de trait est l'épaisseur de trait courante de
-// la figure et son état est non-sélectionné. Le segement n'est inséré dans la 
-// figure que s'il est inclus dans son rectange limite
+// Ajoute un segment graphique à la figure.
 // Valeur de retour : le rang du nouveau segment dans le tableau de segments.
 const unsigned long figure::add(const sgt s)
 {
-    assert( valid() );
+	assert(valid());
 	if (rLimit.contains(s) == false) {//Verify that the segment is inside the figure, if not, assign max and exit
 		return(MAX_UL);
 	}
@@ -95,10 +92,11 @@ const unsigned long figure::add(const sgt s)
 		if (nSgt >= nDimTS) {  //Check that there is still some space in the segment array
 			expand(); //If no place left, expand the array
 		}
-		graphSgt graph_s = graphSgt(s); //Create a new graph segment from a segment
-		graph_s.setWidth(penWidth); //Retrieve current pen width
+		tUpdate++;
+		graphSgt graph_s = graphSgt(s, tUpdate, penWidth); //Create a new graph segment from a segment
 		pTS[nSgt] = graph_s; //Add the segment to the array 
 		nSgt++; //Increase the number of segment
+
 		assert(valid());
 		return (nSgt - 1);
 	}

@@ -17,6 +17,7 @@ private:
     // L'affectation est inaccessible ou bloquée en attendant qu'elle soit cor-
     // rectement codée
 	//figure& operator=(const figure&);
+    int tUpdate = 0;
 
 public:
 // constructeurs, destructeurs, affectation, égalité ____________________________
