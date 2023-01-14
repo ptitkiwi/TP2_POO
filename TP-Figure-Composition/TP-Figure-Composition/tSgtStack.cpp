@@ -82,11 +82,6 @@ void tSgtStack::operator=(const tSgtStack& t)
 	this->ntSgt = t.ntSgt;
 }
 
-tSgt& tSgtStack::operator[](unsigned long i) const
-{
-	return(ptSgt[i]);
-}
-
 const unsigned long tSgtStack::push(const tSgt tseg)
 {
 	assert(valid());

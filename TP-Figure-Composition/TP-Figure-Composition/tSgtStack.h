@@ -19,9 +19,6 @@ public :
 	//Opérateur d'affectation
 	void operator=(const tSgtStack& t);
 
-	// Accès au segment de rang "i", en lecture ou en écriture
-	tSgt& operator[](unsigned long i) const;
-
 
 	// Accesseurs
 
