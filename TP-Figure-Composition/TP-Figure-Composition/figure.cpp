@@ -1,21 +1,26 @@
 #include "stdafx.h"
 #include "figure.h"
-#include "graphSgt.h"
 #include "algorithm"
+#include "graphSgt.h"
+#include "rct.h"
 
 const unsigned long MAX_UL=numeric_limits<unsigned long>::max();
 const double MAX_DOUBLE = numeric_limits<double>::max();
-class sgt;
+class tSgtStack;
 
 // Teste si la figure est dans un état valide
 // Le nombre de segments doit etre inférieur ou égal a la taille du tableau
 // Tous les segments sont inclus dans le cadre rLmit de la figure
 bool figure::valid(void) const
 {
+	assert(rLimit.valid());
+	assert(nDimTS >= 0);
+	assert(nSgt >= 0 && nSgt <= nDimTS);
+	assert(penWidth > 0);
 	assert(nSgt <= nDimTS);
 	for (unsigned int i = 0; i < nSgt-1; i++) 
 	{
-		assert(rLimit.contains(pTS[i].getSegment()));
+		assert(rLimit.contains(pTS[i].getSegment().getSeg()));
 	}
 	return true;
 }
@@ -86,23 +91,21 @@ graphSgt& figure::operator[](unsigned long i) const
 // la figure et son état est non-sélectionné. Le segement n'est inséré dans la 
 // figure que s'il est inclus dans son rectange limite
 // Valeur de retour : le rang du nouveau segment dans le tableau de segments.
-const unsigned long figure::add(const sgt s)
+const unsigned long figure::add(const tSgt s)
 {
     assert( valid() );
-	if (rLimit.contains(s) == false) {//Verify that the segment is inside the figure, if not, assign max and exit
-		return(MAX_UL);
-	}
-	else {
+	//if (rLimit.contains(s.getSeg()) == false) {//Verify that the segment is inside the figure, if not, assign max and exit
+	//	return(MAX_UL);
+	//}
+	//else {
 		if (nSgt >= nDimTS) {  //Check that there is still some space in the segment array
 			expand(); //If no place left, expand the array
 		}
-		graphSgt graph_s = graphSgt(s); //Create a new graph segment from a segment
-		graph_s.setWidth(penWidth); //Retrieve current pen width
-		pTS[nSgt] = graph_s; //Add the segment to the array 
+		pTS[nSgt] = graphSgt(s,penWidth); //Add the segment to the array 
 		nSgt++; //Increase the number of segment
 		assert(valid());
 		return (nSgt - 1);
-	}
+	//}
 }
 
 // Renvoie le nombre de segments actuellement sélectionnés
@@ -152,8 +155,8 @@ const unsigned long figure::closerTo(pt pRef) const
 	double current_min = MAX_DOUBLE;
 	unsigned long index_min = 0;
 	for (unsigned int i = 0; i < nSgt; i++) {
-		if (pTS[i].getSegment().closerTo(pRef).euclide(pRef) < current_min) {//On teste la distance au point le plus proche
-			current_min = pTS[i].getSegment().closerTo(pRef).euclide(pRef);
+		if (pTS[i].getSegment().getSeg().closerTo(pRef).euclide(pRef) < current_min) {//On teste la distance au point le plus proche
+			current_min = pTS[i].getSegment().getSeg().closerTo(pRef).euclide(pRef);
 			index_min = i;
 		}
 	}

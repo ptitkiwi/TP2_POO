@@ -36,7 +36,7 @@ void tSgtStack::expand(void)
 
 // Constructeurs, Destructeurs, Opérations
 
-tSgtStack::tSgtStack(void)
+tSgtStack::tSgtStack()
 	: ptSgt(nullptr)
 	, nDimStack(0)
 	, ntSgt(0)
@@ -56,12 +56,13 @@ tSgtStack::tSgtStack(const tSgtStack& _t)
 		ptSgt[i] = _t.ptSgt[i];
 	}
 }
-
+/*
 tSgtStack::~tSgtStack(void)
 {
 	assert(valid());
 	delete[] ptSgt;
 }
+*/
 
 bool tSgtStack::operator==(const tSgtStack& t) const
 {
@@ -82,7 +83,12 @@ void tSgtStack::operator=(const tSgtStack& t)
 	this->ntSgt = t.ntSgt;
 }
 
-const unsigned long tSgtStack::push(const tSgt tseg)
+tSgt& tSgtStack::operator[](unsigned long i) const
+{
+	return(ptSgt[i]);
+}
+
+const void tSgtStack::push(const tSgt tseg)
 {
 	assert(valid());
 
@@ -93,10 +99,9 @@ const unsigned long tSgtStack::push(const tSgt tseg)
 	ptSgt[ntSgt] = tseg; // Ajout du nouveau tSgt dans la pile
 	ntSgt++; // Incrémentation du nombre de segments datés
 	assert(valid());
-	return (ntSgt - 1);
 }
 
-tSgt tSgtStack::top(void) const
+ const tSgt tSgtStack::top(void) const
 {
 	return(ptSgt[ntSgt-1]);
 }

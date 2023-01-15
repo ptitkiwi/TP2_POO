@@ -3,16 +3,17 @@
 
 // constructeurs, destructeurs, affectation, égalité ____________________________
 
-graphSgt::graphSgt(sgt _segment)
-	:segment(_segment),
+graphSgt::graphSgt(tSgt _tseg, double _width)
+	:tseg(),
 	isSelected(0),
-	width(0)
+	width(_width)
 {
+	tseg.push(_tseg);
 }
 
 // Construction par défaut : 
 graphSgt::graphSgt(void)
-	:segment(),
+	:tseg(),
 	isSelected(0),
 	width(0)
 {
@@ -20,11 +21,36 @@ graphSgt::graphSgt(void)
 
 bool graphSgt::operator==(const graphSgt& s) const
 {
-	return (
-		getSelected() == s.getSelected()
-		&& getSegment() == s.getSegment()
-		&& getWidth() == s.getWidth()
-		);
+	for (unsigned int i = 0; i < getStateCount(); i++) {
+		if (!(this->tseg[i] == s.tseg[i])) 
+		{
+			return false;
+		}
+	}
+	return (getWidth() == s.getWidth());
+}
+
+graphSgt& graphSgt::operator=(const graphSgt& _s)
+{
+	tseg = _s.tseg;
+	width = _s.width;
+	isSelected = _s.isSelected;
+	return *this;
+}
+
+tSgt& graphSgt::operator[](unsigned long i) const
+{
+	return(tseg[i]);
+}
+
+const void graphSgt::push(const tSgt _tseg)
+{
+	tseg.push(_tseg);
+}
+
+void graphSgt::pop(void)
+{
+	tseg.pop();
 }
 
 bool graphSgt::valid(void) const {
@@ -37,12 +63,12 @@ bool graphSgt::valid(void) const {
 void graphSgt::print(ostream& s) const
 {
 	if (isSelected) {
-		s << "* "<< segment << "["<<width<<"]";
+		s << "* ";
 	}
 	else {
-		s << "  " << segment << "[" << width << "]";
+		s << "  ";
 	}
-	
+	s << "w(" << width << ")" << tseg;
 }
 
 // Insertion d'un segment dans un flux

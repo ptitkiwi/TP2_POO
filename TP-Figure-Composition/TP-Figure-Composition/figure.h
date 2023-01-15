@@ -1,8 +1,7 @@
 #pragma once
 #include "rct.h"
+#include "sgt.h"
 #include "graphSgt.h"
-class sgt;
-class graphSgt;
 
 //******************************************************************************
 //
@@ -57,7 +56,7 @@ public:
 	// Le segment n'est inséré dans la figure que si il est inclus dans son rec-
 	// tangle limite.
     // Valeur de retour : le rang du nouveau segment dans le tableau de segments.
-    const unsigned long add(const sgt s);
+    const unsigned long add(const tSgt s);
 
     // Renvoie le nombre de segments actuellement sélectionnés
     const unsigned long getNbrSelected(void) const;

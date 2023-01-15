@@ -1,2 +1,17 @@
-﻿  testTsgtStack.cpp
+﻿  figure.cpp
+  graphSgt.cpp
+C:\Users\rolla\Desktop\Polytech\S9\POO\TP2_Undo\TP-Figure-Composition\TP-Figure-Composition\graphSgt.cpp(24,29): warning C4018: '<': signed/unsigned mismatch
+  pt.cpp
+  rct.cpp
+  sgt.cpp
+  testFigure.cpp
+  testPt.cpp
+  testSgt.cpp
+  testRct.cpp
+  main.cpp
+  testTsgt.cpp
+  testTsgtStack.cpp
+  tSgt.cpp
+  tSgtStack.cpp
+  Generating Code...
   CodeTdTp-Start.vcxproj -> C:\Users\rolla\Desktop\Polytech\S9\POO\TP2_Undo\TP-Figure-Composition\x64\Debug\CodeTdTp-Start.exe

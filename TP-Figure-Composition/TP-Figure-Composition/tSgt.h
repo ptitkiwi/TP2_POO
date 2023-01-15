@@ -1,6 +1,7 @@
 #pragma once
 #include "sgt.h"
-#include "graphSgt.h"
+
+class graphSgt;
 
 class tSgt
 {

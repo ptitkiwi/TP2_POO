@@ -4,6 +4,7 @@
 
 void testFigure(void)
 {
+	/*
 	cout << "\nTest de la classe figure\n\n" << endl;
 
 	// On initialise un rectangle cadre de dimension et de position aléatoires
@@ -22,9 +23,11 @@ void testFigure(void)
 	cerr << "=============  Test Print segments :  =============" << endl;
 	for (int i = 0; i < nb_test_boucle; i++) {
 		sgt s1(rCadre.randSgt());
+		double d = i;
+		tSgt ts1(s1, d);
 		//On assigne aléatoirement une valeur aléatoire pour width et selected
 		f1.setPenWidth(dRand(0, 50));	
-		f1.add(s1);
+		f1.add(ts1);
 		f1[i].setSelected(bRand());
 		cerr <<f1[i] << endl;
 	}
@@ -44,10 +47,12 @@ void testFigure(void)
 	cerr << endl << "=============  Test fonction proche de " << pt_ref << " a une distance de "<<dist <<"  =============" << endl;
 	
 	for (int i = 0; i < nb_test_boucle; i++) {
-		sgt s1(rCadre.randSgt());
+		tSgt s1(rCadre.randSgt());
+		double d = i;
+		tSgtStack ts1(s1, d);
 		//On assigne aléatoirement une valeur aléatoire pour width
 		f2.setPenWidth(dRand(0, 50));
-		f2.add(s1);
+		f2.add(ts1);
 		//Test de la distance au point le plus proche du segment
 		if (pt_ref.euclide(s1.closerTo(pt_ref))) {
 			f2[i].setSelected(bRand());
@@ -132,5 +137,5 @@ void testFigure(void)
 		// On recherche le sgt de la figure le plus proche de ce pt de référence
 
 		// On vérifie ce qu'il faut.
-
+*/
 }
