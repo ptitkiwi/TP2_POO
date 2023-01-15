@@ -55,7 +55,7 @@ void graphSgt::pop(void)
 
 bool graphSgt::valid(void) const {
 	assert(width > 0);
-	//assert(segment.valid());  //Not yet defined
+	assert(tseg.valid());
 	return true;
 }
 

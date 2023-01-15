@@ -69,6 +69,10 @@ public:
     // du point argument. Si la figure est vide, déclenche une assertion.
     const unsigned long closerTo(pt pRef) const;
 
+    // Compte le nombre d'occurrences dans la figure du segment graphique argt
+    // L'état de sélection n'est pas pris en compte
+    unsigned long count(const graphSgt& s0) const;
+
     // Ecrit la figure dans le flux argument : son adresse, le rectangle cadre et
     // la liste de tous les segments, un par ligne, précédes d'un * pour les seg-
     // ments sélectionnés. Le nbr de segments est écrit à la fin.
@@ -93,6 +97,7 @@ private:
 
     // Agrandit le tableau de segments de 10%, mais au moins de 8 places de plus.
     void expand(void);
+    double tUpdate;
 };
 
 // Insertion dans un flux

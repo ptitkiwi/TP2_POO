@@ -4,6 +4,38 @@
 
 void testFigure(void)
 {
+	cout << "\nTest de la classe figure\n\n" << endl;
+
+	// On initialise un rectangle cadre de dimension et de position aléatoires
+	rct rcLimit(0, dRand(1000, 10000), 0, dRand(1000, 10000));
+	assert(rcLimit.valid());
+
+	//On créé rCadre de 20% de plus que rcLimit
+	rct rCadre(0, floor(1.2 * rcLimit.x2()), 0, floor(1.2 * rcLimit.y2()));
+
+	// On constuit une figure vide délimitée par ce rectangle et on l'affiche
+	figure f(rCadre);
+	assert(f.valid());
+
+	cout << "Figure f :" << f << endl;
+
+	// on ajoute un nombre aléatoire de segments dans la figure f
+	unsigned int nb_setSelected = 0;
+	unsigned int t = 0;
+	for (int i = 10; i > 0; i--)
+	{
+		f.setPenWidth(i);
+		sgt newSgt = rCadre.randSgt();
+		tSgt tSgt1 = tSgt(newSgt, t);
+		unsigned res = f.add(tSgt1);
+		t++;
+	}
+
+	// décompte de nombre de segments 
+	cout << f << endl;
+	cout << "nombre de segments selectionnes = " << f.getNbrSelected() << endl;
+	assert(f.getNbrSelected() == nb_setSelected);
+
 	/*
 	cout << "\nTest de la classe figure\n\n" << endl;
 
@@ -95,47 +127,5 @@ void testFigure(void)
 
 	f1 == g1 ? (cerr << "==> Les deux figures sont identiques" << endl) : (cerr<< "==> Les deux figures sont differentes" << endl);
 
-
-
-
-
-
-
-	// Pour définir la notion de "proche du pt de référence", on produit une
-	// valeur de distance aléatoire qui soit inférieure à la largeur et à la
-	// hauteur du rectangle cadre
-
-
-	// On agrandit le rectangle cadre d'environ 10% dans chaque axe de façon à
-	// produire aussi parfois des segments qui sont dans le rectangle cadre, 
-	// mais pas dans les limites de la figure.
-
-
-	// On peuple la figure avec des segments aléatoires inclus dans le rectangle
-	// cadre et on sélectionne ceux qui sont proches du point de référence.
-	// On change aussi régulièrement l'épaisseur du crayon courant.
-
-
-	// On vérifie ce que l'on peut.
-
-
-	// Construction par copie
-	// On teste la construction par copie en vérifiant la duplication : une figure
-	// et sa copie ont des segments identiques et dans le même ordre.
-
-
-	// Suppression des segmenst sélectionnés
-	// On supprime de tous les segments sélectionnés et on teste ce qu'on peut.
-
-
-	// Recherche du segment le plus proche d'un point donné (si la figure est
-	// non vide)
-
-		// On choisit comme pt de référence un pt d'un sgt aléatoire de la figure
-
-
-		// On recherche le sgt de la figure le plus proche de ce pt de référence
-
-		// On vérifie ce qu'il faut.
 */
 }

@@ -73,6 +73,7 @@ int main(void)
 		testFigure(); */
 	testTsgt();
 	testTsgtStack();
+	testFigure();
 
 	return 0;
 }

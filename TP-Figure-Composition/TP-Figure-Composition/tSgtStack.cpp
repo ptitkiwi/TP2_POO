@@ -103,6 +103,7 @@ const void tSgtStack::push(const tSgt tseg)
 
  const tSgt tSgtStack::top(void) const
 {
+	assert(ntSgt > 0);
 	return(ptSgt[ntSgt-1]);
 }
 

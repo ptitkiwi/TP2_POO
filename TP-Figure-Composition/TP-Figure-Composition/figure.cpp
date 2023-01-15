@@ -18,9 +18,9 @@ bool figure::valid(void) const
 	assert(nSgt >= 0 && nSgt <= nDimTS);
 	assert(penWidth > 0);
 	assert(nSgt <= nDimTS);
-	for (unsigned int i = 0; i < nSgt-1; i++) 
+	for (unsigned int i = 0; i < nSgt; i++) 
 	{
-		assert(rLimit.contains(pTS[i].getSegment().getSeg()));
+		assert(rLimit.contains(operator[](i).getCurrentGeo()));
 	}
 	return true;
 }
@@ -28,6 +28,11 @@ bool figure::valid(void) const
 // constructeurs, destructeur
 figure::figure(rct _rLimit)
 	:rLimit(_rLimit)
+	, pTS(nullptr)
+	, nDimTS(0)
+	, nSgt(0)
+	, penWidth(1)
+	, tUpdate(0)
 {
 	assert(_rLimit.valid());
 
@@ -45,7 +50,8 @@ figure::figure(const figure& f):
 	rLimit(f.rLimit),
 	nDimTS(f.nDimTS),
 	nSgt(f.nSgt),
-	penWidth(f.penWidth)
+	penWidth(f.penWidth),
+	tUpdate(f.tUpdate)
 {
 	assert(f.valid());
 	pTS = new graphSgt[nDimTS];
@@ -57,17 +63,22 @@ figure::figure(const figure& f):
 
 bool figure::operator==(const figure& f) const
 {
-	assert(f.valid());
 	assert(valid());
-	for (unsigned int i = 0; i < nSgt; i++) {
-		if (!(pTS[i] == f[i])) {
-			return false;
+	assert(f.valid());
+
+	if (
+		rLimit == f.rLimit
+		&& nSgt == f.nSgt
+		)
+	{
+		for (unsigned int i = 0; i < nSgt; i++)
+		{
+			if (count(operator[](i)) != f.count(operator[](i)))
+				return false;
 		}
+		return true;
 	}
-	return(getSize() == f.getSize() //nSgt
-		&& getPenWidth() == f.getPenWidth()
-		&& nDimTS == f.nDimTS
-		);
+	return false;
 }
 
 
@@ -94,18 +105,20 @@ graphSgt& figure::operator[](unsigned long i) const
 const unsigned long figure::add(const tSgt s)
 {
     assert( valid() );
-	//if (rLimit.contains(s.getSeg()) == false) {//Verify that the segment is inside the figure, if not, assign max and exit
-	//	return(MAX_UL);
-	//}
-	//else {
+	if (rLimit.contains(s.getSeg()) == false) {//Verify that the segment is inside the figure, if not, assign max and exit
+		return(MAX_UL);
+	}
+	else {
 		if (nSgt >= nDimTS) {  //Check that there is still some space in the segment array
 			expand(); //If no place left, expand the array
 		}
+		tUpdate++;
 		pTS[nSgt] = graphSgt(s,penWidth); //Add the segment to the array 
 		nSgt++; //Increase the number of segment
+
 		assert(valid());
 		return (nSgt - 1);
-	//}
+	}
 }
 
 // Renvoie le nombre de segments actuellement sélectionnés
@@ -155,8 +168,8 @@ const unsigned long figure::closerTo(pt pRef) const
 	double current_min = MAX_DOUBLE;
 	unsigned long index_min = 0;
 	for (unsigned int i = 0; i < nSgt; i++) {
-		if (pTS[i].getSegment().getSeg().closerTo(pRef).euclide(pRef) < current_min) {//On teste la distance au point le plus proche
-			current_min = pTS[i].getSegment().getSeg().closerTo(pRef).euclide(pRef);
+		if (pTS[i].getCurrentGeo().closerTo(pRef).euclide(pRef) < current_min) {//On teste la distance au point le plus proche
+			current_min = pTS[i].getCurrentGeo().closerTo(pRef).euclide(pRef);
 			index_min = i;
 		}
 	}
@@ -164,33 +177,41 @@ const unsigned long figure::closerTo(pt pRef) const
 	return (index_min); 
 }
 
+// Compte le nombre d'occurrences dans la figure du segment graphique argt
+// L'état de sélection n'est pas pris en compte
+unsigned long figure::count(const graphSgt& s0) const
+{
+	unsigned long nb_occur = 0;
+
+	for (unsigned int i = 0; i < nSgt; i++)
+		if (operator[](i) == s0 && operator[](i).getCurrentTime() > 0)
+			nb_occur++;
+	return nb_occur;
+}
+
 // Ecrit la figure dans le flux argument : le rectangle cadre et la liste de
-// tous les segments, un par ligne ; un * précède les segments sélectionnés.
+// tous les segments datés, un par ligne ; un * précède les segments sélectionnés.
 /*
-Figure @ 0x0x7fff5fbff5d8
-rLimit : RCT[-4911.11, 3336.31]x[0, 7978.43]
- SGT(PT( 0, 0 ), PT( 0, 0 ))[1]&
-* SGT(PT( -1305.71, 6604.08 ), PT( -3372.95, 4475.2 ))[1]
-* SGT(PT( 761.883, 7179.23 ), PT( -4596.9, 7469.87 ))[6]
-* SGT(PT( 1378.17, 5274.92 ), PT( -339.927, 4622.5 ))[9]
- SGT(PT( -4664.63, 7366.77 ), PT( -2004.75, 6254.84 ))[1]
- SGT(PT( -116.04, 4539.21 ), PT( -3731.75, 4391.97 ))[7]
-* SGT(PT( -3910.39, 7978.43 ), PT( 2404.3, 5389.72 ))[8]
- SGT(PT( -2801.39, 7138.51 ), PT( -2160.43, 5948.75 ))[7]
-* SGT(PT( 1036.58, 7294.03 ), PT( -2407.38, 5113.87 ))[9]
- SGT(PT( -2366.05, 7869.29 ), PT( 305.288, 6726.83 ))[0]
-10 segment(s), 5 sélectionné(s)
+Figure @ 0x012FF74C, epoque : 5
+rLimit : RCT[-66.34, -39.59]x[-49.91, 15.22]
+[ 0] w( 0) { 1 }SGT(( -65.09, 7.12 ), ( -57.90, -1.40 ))@1
+[ 1] w( 2) { 1 }SGT(( -61.36, 4.60 ), ( -63.68, -2.17 ))@2
+[ 2] w( 3) { 1 }SGT(( -42.33, -18.81 ), ( -48.41, 5.35 ))@3
+[ 3] * w( 4) { 1 }SGT(( -53.13, -6.43 ), ( -45.43, -13.27 ))@4
+[ 4] w( 5) { 1 }SGT(( -54.03, 9.37 ), ( -64.17, -10.37 ))@5
+5 segment(s) / selection de 1
 */
 void figure::print(ostream& s) const
 {
 	assert( valid() );
 
-	s << "Figure @ " << this << endl;
-	s << "rLimit :" << rLimit<<endl;
+	s << "Figure @ " << this << ", epoque : " << tUpdate << endl;
+	s << "rLimit :" << rLimit << endl;
+
 	for (unsigned int i = 0; i < nSgt; i++ ) {
-		s << pTS[i] << endl;
+		s << "[ " << i << "]	" << pTS[i];
 	}
-	s << nSgt << " segment(s), " << getNbrSelected() << " selectionne(s)" << endl;
+	s << getSize() << " segment(s), " << getNbrSelected() << " selectionne(s)" << endl;
 }
 
 

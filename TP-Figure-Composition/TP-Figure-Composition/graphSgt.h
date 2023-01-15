@@ -13,6 +13,8 @@ private:
 	double  width;
 	bool isSelected;
 	tSgtStack tseg;
+	// Boolean pour indiquer si le segment est effacé ou non
+	bool m_erased = false;
 public:
 	// constructeurs, destructeurs, affectation, égalité ____________________________
 	graphSgt(tSgt _tseg, double _width);
@@ -28,7 +30,7 @@ public:
 	// Accesseurs ___________________________________________________________________
 	// 
 	// Renvoie le segment daté courant de la géométrie
-	const tSgt getSegment(void) const;
+	const tSgtStack getSegment(void) const;
 	// Renvoie le taille du segment graphique 
 	const double getWidth(void) const;
 	// Renvoie le(s) segment(s) graphique(s) selectionné(s)
@@ -70,11 +72,11 @@ ostream& operator<<(ostream& s, const graphSgt& gSgt);
 
 // Accesseurs ___________________________________________________________________
 // 
-// Renvoie le segment daté courant de la géométrie
+// Renvoie la pile de segments datés de la géométrie
 
-inline const tSgt graphSgt::getSegment(void) const
+inline const tSgtStack graphSgt::getSegment(void) const
 {
-	return this->tseg.top();
+	return tseg;
 }
 
 // Renvoie le taille du segment graphique 
@@ -87,14 +89,14 @@ inline const bool graphSgt::getSelected(void) const{
 }
 inline const sgt graphSgt::getCurrentGeo(void) const
 {
-	tSgt tSeg = this->getSegment();
+	tSgt tSeg = this->tseg.top();
 	sgt seg = tSeg.getSeg();
 
 	return sgt(seg);
 }
 inline const double graphSgt::getCurrentTime(void) const
 {
-	tSgt tSeg = this->getSegment();
+	tSgt tSeg = this->tseg.top();
 	return (tSeg.getDate());
 }
 inline const long graphSgt::getStateCount(void) const
